@@ -5,18 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.ListItemBinding
 import com.example.shopapp.model.Item
+import javax.inject.Inject
 
-class RecyclerAdapter(val clickListener: (Int) -> Unit):   RecyclerView.Adapter<RecyclerAdapter.ItemHolder>() {
-
+class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int) -> Unit):   RecyclerView.Adapter<RecyclerAdapter.ItemHolder>() {
+//TODO GLIDE FIX
     private var recyclerViewItems = ArrayList<Item>()
 
-    class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListItemBinding.bind(view)
         fun bind(item: Item) = with(binding) {
-            id.text = item.id.toString()
+            glide.load(item.image)
+                .into(binding.itemImage)
+            title.text = item.title
             category.text = item.category
             price.text = item.price.toString()
         }

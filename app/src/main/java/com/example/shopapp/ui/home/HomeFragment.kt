@@ -10,11 +10,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.RequestManager
 import com.example.shopapp.databinding.FragmentHomeBinding
 import com.example.shopapp.di.application.appComponent
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
+
+    @Inject
+    lateinit var glide: RequestManager
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -45,7 +49,7 @@ class HomeFragment : Fragment() {
         //move from here
         homeViewModel.getList()
 
-        adapter = RecyclerAdapter {
+        adapter = RecyclerAdapter(glide) {
             Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
         }
         binding.itemView.adapter = adapter
