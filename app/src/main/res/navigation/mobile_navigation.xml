@@ -9,7 +9,16 @@
         android:id="@+id/navigation_home"
         android:name="com.example.shopapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_webFragment"
+            app:destination="@id/webFragment" >
+            <argument
+                android:name="address"
+                android:defaultValue="https://ru.ebay.com/" />
+        </action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_explore"
@@ -22,4 +31,17 @@
         android:name="com.example.shopapp.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/webFragment"
+        android:name="com.example.shopapp.ui.WebFragment"
+        android:label="fragment_web"
+        tools:layout="@layout/fragment_web"
+        >
+        <action
+            android:id="@+id/action_webFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <argument
+            android:name="address"
+            app:argType="string" />
+    </fragment>
 </navigation>
