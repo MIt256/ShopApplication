@@ -1,10 +1,10 @@
-package com.example.shopapp.ui.explore
+package com.example.shopapp.ui.cart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ExploreViewModel : ViewModel() {
+class CartViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is explore Fragment"

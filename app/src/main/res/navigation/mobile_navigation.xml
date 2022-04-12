@@ -21,10 +21,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_explore"
-        android:name="com.example.shopapp.ui.explore.ExploreFragment"
-        android:label="@string/title_explore"
-        tools:layout="@layout/fragment_explore" />
+        android:id="@+id/navigation_cart"
+        android:name="com.example.shopapp.ui.cart.CartFragment"
+        android:label="@string/title_cart"
+        tools:layout="@layout/fragment_cart" />
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -44,4 +44,8 @@
             android:name="address"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.shopapp.ui.settings.SettingsFragment"
+        android:label="@string/title_settings" />
 </navigation>
