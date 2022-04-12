@@ -33,7 +33,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/webFragment"
-        android:name="com.example.shopapp.ui.WebFragment"
+        android:name="com.example.shopapp.ui.home.WebFragment"
         android:label="fragment_web"
         tools:layout="@layout/fragment_web"
         >

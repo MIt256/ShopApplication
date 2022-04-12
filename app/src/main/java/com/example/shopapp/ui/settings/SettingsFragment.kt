@@ -28,13 +28,13 @@ class SettingsFragment : Fragment() {
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        //pic
         binding.imageView.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1) }
-
+        //spinner
         var aa = ArrayAdapter(binding.root.context, R.layout.simple_spinner_item, languages)
         aa.setDropDownViewResource(R.layout.simple_spinner_item)
 
@@ -44,9 +44,6 @@ class SettingsFragment : Fragment() {
             setSelection(0, false)
             prompt = "Select currency"
         }
-
-
-
 
         return root
     }

@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.ListItemBinding
+import com.example.shopapp.model.findingApi.Item
 
 class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) -> Unit):   RecyclerView.Adapter<RecyclerAdapter.ItemHolder>() {
 //TODO GLIDE FIX
@@ -42,7 +44,7 @@ class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addToList(items: ArrayList<com.example.shopapp.model.findingApi.Item>) {
+    fun addToList(items: ArrayList<Item>) {
         recyclerViewItems = items
         notifyDataSetChanged()
     }
