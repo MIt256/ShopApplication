@@ -15,11 +15,11 @@ class HomeViewModel @Inject constructor(private val repo: Repository): ViewModel
 
     private val text = MutableLiveData<com.example.shopapp.model.findingApi.FindResponse>()
 
-    fun getList() {
+    fun getList(query:String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 withContext(Dispatchers.Main) {
-                    text.value = repo.getData()
+                    text.value = repo.getData(query)
                 }
             } catch (ex: Exception) {
                 Log.e("ERROR", ex.toString())

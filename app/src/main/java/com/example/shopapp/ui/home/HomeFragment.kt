@@ -2,9 +2,11 @@ package com.example.shopapp.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -44,12 +46,12 @@ class HomeFragment : Fragment() {
         val homeViewModel =
             ViewModelProvider( this, vmFactory).get(HomeViewModel::class.java)
 
+        //move result to adapter
         homeViewModel.getText().observe(viewLifecycleOwner) {
             adapter.addToList(it.findItemsByKeywordsResponse[0].searchResult[0].items)
         }
-        //move from here
-        homeViewModel.getList()
 
+        //adapter action on tap
         adapter = RecyclerAdapter(glide) {_,address ->
             val bundle = Bundle()
                 bundle.putString("address", address)
@@ -61,6 +63,20 @@ class HomeFragment : Fragment() {
             Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
         }
         binding.itemView.adapter = adapter
+
+        //search
+        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                //move from here
+                homeViewModel.getList(binding.searchView.query.toString())
+                return false
+            }
+        })
 
         return binding.root
     }
