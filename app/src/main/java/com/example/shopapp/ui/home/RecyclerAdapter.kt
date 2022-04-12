@@ -13,11 +13,11 @@ import com.example.shopapp.model.findingApi.Item
 
 class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) -> Unit):   RecyclerView.Adapter<RecyclerAdapter.ItemHolder>() {
 //TODO GLIDE FIX
-    private var recyclerViewItems = ArrayList<com.example.shopapp.model.findingApi.Item>()
+    private var recyclerViewItems = ArrayList<Item>()
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListItemBinding.bind(view)
-        fun bind(item: com.example.shopapp.model.findingApi.Item) = with(binding) {
+        fun bind(item: Item) = with(binding) {
             //TODO reformat
             glide.load(item.galleryURL[0])
                 .into(binding.itemImage)

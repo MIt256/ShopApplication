@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shopapp.R
 import com.example.shopapp.model.findingApi.FindResponse
+import com.example.shopapp.model.findingApi.Item
 import com.example.shopapp.repository.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,14 +16,16 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val repo: Repository): ViewModel() {
 
-    private val liveDataResponse = MutableLiveData<FindResponse>()
+    private val liveDataResponse = MutableLiveData<ArrayList<Item>>()
     private val categories = MutableLiveData<MutableList<String>>()
 
     fun getList(query:String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 withContext(Dispatchers.Main) {
-                    liveDataResponse.value = repo.getData(query)
+                    val result = repo.getData(query)
+                    liveDataResponse.value = result
+                    if (!result.isNullOrEmpty())
                     setCategories()
                 }
             } catch (ex: Exception) {
@@ -36,7 +39,7 @@ class HomeViewModel @Inject constructor(private val repo: Repository): ViewModel
 
     private fun setCategories(){
         var tempCategories = arrayListOf("ALL")
-        liveDataResponse.value?.findItemsByKeywordsResponse?.get(0)?.searchResult?.get(0)?.items?.forEach {
+        liveDataResponse.value?.forEach {
             if (!tempCategories.contains( it.primaryCategory[0].categoryName[0]))
                 tempCategories.add(it.primaryCategory[0].categoryName[0])
         }

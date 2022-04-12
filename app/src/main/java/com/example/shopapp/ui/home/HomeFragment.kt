@@ -30,11 +30,8 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var glide: RequestManager
-
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-
-
 
     lateinit var adapter: RecyclerAdapter
     private var _binding: FragmentHomeBinding? = null
@@ -59,43 +56,51 @@ class HomeFragment : Fragment() {
 
         //move result to adapter
         homeViewModel.getResult().observe(viewLifecycleOwner) {
-           adapter.addToList(it.findItemsByKeywordsResponse[0].searchResult[0].items)
+            if (!it.isNullOrEmpty())
+                adapter.addToList(it)
+            else Toast.makeText(binding.root.context,"Nothing :(", Toast.LENGTH_SHORT).show()
         }
         //after set categories
         homeViewModel.getCategories().observe(viewLifecycleOwner) {
             //category
+            if (!it.isNullOrEmpty() && !(homeViewModel.getResult().value.isNullOrEmpty())) {
+                val aa = ArrayAdapter(
+                    binding.root.context, R.layout.spinner_item,
+                    it
+                )
+                aa.setDropDownViewResource(R.layout.spinner_item)
 
-            var aa = ArrayAdapter(binding.root.context, R.layout.spinner_item,
-                homeViewModel.getCategories().value!!)
-            aa.setDropDownViewResource(R.layout.spinner_item)
-
-            with(binding.spinnerCategory)
-            {
-                isVisible = true
-                adapter = aa
-                setSelection(0, false)
-                prompt = "Select category"
-            }
+                with(binding.spinnerCategory)
+                {
+                    isVisible = true
+                    adapter = aa
+                    setSelection(0, false)
+                    prompt = "Select category"
+                }
+            } else {binding.spinnerCategory.isVisible = false}
         }
 
+        //categories
         binding.spinnerCategory.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View, position: Int, id: Long) {
+                //TODO FIX null
                 if (homeViewModel.getCategories().value!![position] != "ALL") {
                     CoroutineScope(Dispatchers.Default).launch {
                         var categoryItems = ArrayList<Item>()
-                        val allItems =
-                            homeViewModel.getResult().value!!.findItemsByKeywordsResponse[0].searchResult[0].items
-                        allItems.forEach {
-                            if (it.primaryCategory[0].categoryName[0] == homeViewModel.getCategories().value!![position]) categoryItems.add(
-                                it
-                            )
+                        val allItems = homeViewModel.getResult().value
+                        if (allItems != null) {
+                            allItems.forEach {
+                                if (it.primaryCategory[0].categoryName[0] == homeViewModel.getCategories().value!![position]) categoryItems.add(
+                                    it
+                                )
+                            }
                         }
                         withContext(Dispatchers.Main) { adapter.addToList(categoryItems) }
                     }
                 } else
-                    adapter.addToList(homeViewModel.getResult().value!!.findItemsByKeywordsResponse[0].searchResult[0].items)
+                    adapter.addToList(homeViewModel.getResult().value!!)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {// write code to perform some action
@@ -121,7 +126,6 @@ class HomeFragment : Fragment() {
         //search
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
-
                 return false
             }
 
