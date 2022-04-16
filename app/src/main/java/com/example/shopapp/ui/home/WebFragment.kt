@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 
 import com.example.shopapp.databinding.FragmentWebBinding
 import com.example.shopapp.di.application.appComponent
+import com.example.shopapp.ui.static.Profile
 import javax.inject.Inject
 
 
@@ -20,11 +21,6 @@ class WebFragment : Fragment() {
 
     private var _binding: FragmentWebBinding? = null
     private val binding get() = _binding!!
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        context.appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +36,8 @@ class WebFragment : Fragment() {
 
         binding.addToCart.setOnClickListener {
 
-        //todo add to cart
-          //  args.item
-           // val item = requireArguments().getSerializable("item") as Item
+            Profile.cartList.add(args.item)
+
             Toast.makeText(binding.root.context,
                 "${args.item.title} Success added to cart",
                 Toast.LENGTH_SHORT).show()

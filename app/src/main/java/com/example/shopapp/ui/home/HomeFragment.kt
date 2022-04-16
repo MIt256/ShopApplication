@@ -109,8 +109,6 @@ class HomeFragment : Fragment() {
         }
         binding.itemView.adapter = adapter
 
-
-
         //search
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {

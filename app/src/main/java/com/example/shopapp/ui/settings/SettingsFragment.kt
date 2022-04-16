@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.shopapp.databinding.FragmentSettingsBinding
+import com.example.shopapp.ui.static.Profile
 
 
 class SettingsFragment : Fragment() {
@@ -44,6 +46,18 @@ class SettingsFragment : Fragment() {
             setSelection(0, false)
             prompt = "Select currency"
         }
+        binding.imageView.setImageURI(Profile.image)
+
+        binding.saveBtn.setOnClickListener {
+            Profile.currency = binding.spinner.selectedItem.toString()
+            Profile.firstName = binding.editTextFirstName.text.toString()
+            Profile.secondName = binding.editTextMiddleName.text.toString()
+            Profile.lastName = binding.editTextLastName.text.toString()
+
+            Profile.theme = binding.themeChanger.isChecked.toString()
+
+            Toast.makeText(context,"Success saved",Toast.LENGTH_SHORT).show()
+        }
 
         return root
     }
@@ -51,6 +65,7 @@ class SettingsFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (data != null) {
             binding.imageView.setImageURI(data.data)
+            Profile.image = data.data
         }
     }
 
