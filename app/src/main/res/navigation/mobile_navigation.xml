@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/authFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -41,17 +41,27 @@
         <argument
             android:name="item"
             app:argType="com.example.shopapp.ui.model.AppItem" />
+        <action
+            android:id="@+id/action_webFragment_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+        <action
+            android:id="@+id/action_webFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.example.shopapp.ui.settings.SettingsFragment"
-        android:label="@string/title_settings" />
+        android:label="@string/title_settings" >
+        <action
+            android:id="@+id/action_navigation_settings_to_authFragment2"
+            app:destination="@id/authFragment" />
+    </fragment>
     <fragment
         android:id="@+id/authFragment"
         android:name="com.example.shopapp.ui.auth.AuthFragment"
         android:label="AuthFragment" >
         <action
-            android:id="@+id/action_authFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            android:id="@+id/action_authFragment_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
     </fragment>
 </navigation>

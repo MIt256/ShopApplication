@@ -97,10 +97,6 @@ class HomeFragment : Fragment() {
         //adapter action on tap
         adapter = RecyclerAdapter(glide) {pos,address ->
             val item = homeViewModel.getSelectedItems().value!![pos]
-//            val bundle = Bundle()
-//                bundle.putString("address", address)
-//                bundle.putSerializable("item",item as Serializable )
-            // todo pos from new list (category) default ALL and pos from it
             val action = HomeFragmentDirections.actionNavigationHomeToWebFragment3(address, item)
 
                 findNavController().navigate(action)

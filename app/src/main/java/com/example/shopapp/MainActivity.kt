@@ -2,7 +2,6 @@ package com.example.shopapp
 
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -10,7 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.shopapp.databinding.ActivityMainBinding
-import com.example.shopapp.di.application.MyApplication
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         visibilityNavElements(navController)
     }
 
+    
+
     private fun visibilityNavElements(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -45,5 +46,10 @@ class MainActivity : AppCompatActivity() {
                 else -> binding.navView.visibility = View.GONE
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

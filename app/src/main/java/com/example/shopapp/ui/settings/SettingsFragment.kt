@@ -12,7 +12,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.shopapp.databinding.FragmentSettingsBinding
+import com.example.shopapp.ui.home.HomeFragmentDirections
 import com.example.shopapp.ui.static.Profile
 
 
@@ -57,6 +59,11 @@ class SettingsFragment : Fragment() {
             Profile.theme = binding.themeChanger.isChecked.toString()
 
             Toast.makeText(context,"Success saved",Toast.LENGTH_SHORT).show()
+        }
+
+        binding.accountChange.setOnClickListener {
+            val action = SettingsFragmentDirections.actionNavigationSettingsToAuthFragment2()
+            findNavController().navigate(action)
         }
 
         return root

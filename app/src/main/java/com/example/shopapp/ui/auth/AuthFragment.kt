@@ -1,16 +1,16 @@
 package com.example.shopapp.ui.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.shopapp.R
 import com.example.shopapp.databinding.FragmentAuthBinding
-
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -26,9 +26,10 @@ class AuthFragment : Fragment() {
     ): View? {
         binding = FragmentAuthBinding.inflate(layoutInflater)
 
-        setListener()
         return binding.root
     }
+
+
 
     private fun checkData(login: String, password: String): Boolean {
         if (login.isNotEmpty() && password.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(login)
@@ -41,7 +42,7 @@ class AuthFragment : Fragment() {
     }
 
     private fun setListener() {
-        binding.buttonReg.setOnClickListener() {
+        binding.buttonReg.setOnClickListener {
             val login = binding.name.text.toString()
             val password = binding.password.text.toString()
             if (checkData(login, password)) {
@@ -54,7 +55,7 @@ class AuthFragment : Fragment() {
                         Navigation
                             .findNavController(binding.root)
                             .navigate(
-                                R.id.action_authFragment_to_navigation_home,
+                                R.id.action_authFragment_to_navigation_settings,
                                 bundle,
                                 null
                             )
@@ -74,7 +75,7 @@ class AuthFragment : Fragment() {
                         Navigation
                             .findNavController(binding.root)
                             .navigate(
-                                R.id.action_authFragment_to_navigation_home,
+                                R.id.action_authFragment_to_navigation_settings,
                                 bundle,
                                 null
                             )
@@ -84,5 +85,6 @@ class AuthFragment : Fragment() {
             }
         }
     }
+
 
 }

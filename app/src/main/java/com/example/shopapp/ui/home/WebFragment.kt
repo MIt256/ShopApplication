@@ -1,20 +1,16 @@
 package com.example.shopapp.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-
 import com.example.shopapp.databinding.FragmentWebBinding
-import com.example.shopapp.di.application.appComponent
 import com.example.shopapp.ui.static.Profile
-import javax.inject.Inject
 
 
 class WebFragment : Fragment() {
@@ -45,4 +41,12 @@ class WebFragment : Fragment() {
 
         return binding.root
     }
+
+
+
+//        val action = WebFragmentDirections.actionWebFragmentToNavigationHome()
+//        findNavController().navigate(action)
+
+
+
 }
