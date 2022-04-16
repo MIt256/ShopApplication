@@ -12,17 +12,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.FragmentHomeBinding
 import com.example.shopapp.di.application.appComponent
-import com.example.shopapp.model.findingApi.Item
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -55,15 +50,21 @@ class HomeFragment : Fragment() {
             ViewModelProvider( this, vmFactory).get(HomeViewModel::class.java)
 
         //move result to adapter
-        homeViewModel.getResult().observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty())
-                adapter.addToList(it)
-            else Toast.makeText(binding.root.context,"Nothing :(", Toast.LENGTH_SHORT).show()
+        homeViewModel.getAllItems().observe(viewLifecycleOwner) {
+            homeViewModel.setCategories()
+            homeViewModel.setSelectedItems(0)
         }
+        //observe selection
+        homeViewModel.getSelectedItems().observe(viewLifecycleOwner) {
+            adapter.addToList(it)
+            if (it.isNullOrEmpty())
+                Toast.makeText(binding.root.context, "Nothing :(", Toast.LENGTH_SHORT).show()
+        }
+
         //after set categories
         homeViewModel.getCategories().observe(viewLifecycleOwner) {
             //category
-            if (!it.isNullOrEmpty() && !(homeViewModel.getResult().value.isNullOrEmpty())) {
+            if (!it.isNullOrEmpty() && !(homeViewModel.getAllItems().value.isNullOrEmpty())) {
                 val aa = ArrayAdapter(
                     binding.root.context, R.layout.spinner_item,
                     it
@@ -80,42 +81,28 @@ class HomeFragment : Fragment() {
             } else {binding.spinnerCategory.isVisible = false}
         }
 
-        //categories
+        //categories click
         binding.spinnerCategory.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>,
-                                        view: View, position: Int, id: Long) {
-                //TODO FIX null
-                if (homeViewModel.getCategories().value!![position] != "ALL") {
-                    CoroutineScope(Dispatchers.Default).launch {
-                        var categoryItems = ArrayList<Item>()
-                        val allItems = homeViewModel.getResult().value
-                        if (allItems != null) {
-                            allItems.forEach {
-                                if (it.primaryCategory[0].categoryName[0] == homeViewModel.getCategories().value!![position]) categoryItems.add(
-                                    it
-                                )
-                            }
-                        }
-                        withContext(Dispatchers.Main) { adapter.addToList(categoryItems) }
-                    }
-                } else
-                    adapter.addToList(homeViewModel.getResult().value!!)
+            override fun onItemSelected(parent: AdapterView<*>,view: View, position: Int, id: Long) {
+                homeViewModel.setSelectedItems(position)
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {// write code to perform some action
-             }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
 
         }
 
         //adapter action on tap
-        adapter = RecyclerAdapter(glide) {_,address ->
-            val bundle = Bundle()
-                bundle.putString("address", address)
+        adapter = RecyclerAdapter(glide) {pos,address ->
+            val shopItem = homeViewModel.getSelectedItems().value!![pos]
+//            val bundle = Bundle()
+//                bundle.putString("address", address)
+//                bundle.putSerializable("item",item as Serializable )
+            // todo pos from new list (category) default ALL and pos from it
+            val action = HomeFragmentDirections.actionNavigationHomeToWebFragment3(address, shopItem)
 
-            Navigation
-                .findNavController(binding.root)
-                .navigate(R.id.action_navigation_home_to_webFragment,bundle)
+                findNavController().navigate(action)
 
             Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
         }

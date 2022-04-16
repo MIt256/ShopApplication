@@ -6,6 +6,7 @@ import com.example.shopapp.di.modules.GlideModule
 import com.example.shopapp.di.modules.NetworkModule
 import com.example.shopapp.di.modules.VMModule
 import com.example.shopapp.ui.home.HomeFragment
+import com.example.shopapp.ui.home.WebFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 @Singleton
 interface ApplicationComponent {
     fun inject(activity: HomeFragment)
+    fun inject(activity: WebFragment)
 
     @Component.Builder
     interface Builder {

@@ -4,26 +4,25 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.ListItemBinding
-import com.example.shopapp.model.findingApi.Item
+import com.example.shopapp.model.findingApi.ShopItem
 
 class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) -> Unit):   RecyclerView.Adapter<RecyclerAdapter.ItemHolder>() {
 //TODO GLIDE FIX
-    private var recyclerViewItems = ArrayList<Item>()
+    var recyclerViewItems = ArrayList<ShopItem>()
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListItemBinding.bind(view)
-        fun bind(item: Item) = with(binding) {
+        fun bind(shopItem: ShopItem) = with(binding) {
             //TODO reformat
-            glide.load(item.galleryURL[0])
+            glide.load(shopItem.galleryURL[0])
                 .into(binding.itemImage)
-            title.text = item.title[0]
-            category.text = item.primaryCategory[0].categoryName[0]
-            price.text = item.sellingStatus[0].currentPrice[0].__value__
+            title.text = shopItem.title[0]
+            category.text = shopItem.primaryCategory[0].categoryName[0]
+            price.text = shopItem.sellingStatus[0].currentPrice[0].__value__
         }
     }
 
@@ -44,8 +43,8 @@ class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addToList(items: ArrayList<Item>) {
-        recyclerViewItems = items
+    fun addToList(shopItems: ArrayList<ShopItem>) {
+        recyclerViewItems = shopItems
         notifyDataSetChanged()
     }
 }
