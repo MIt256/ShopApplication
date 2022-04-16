@@ -36,7 +36,7 @@
             app:argType="string" />
         <argument
             android:name="item"
-            app:argType="com.example.shopapp.model.findingApi.ShopItem" />
+            app:argType="com.example.shopapp.ui.model.AppItem" />
     </fragment>
     <fragment
         android:id="@+id/navigation_settings"

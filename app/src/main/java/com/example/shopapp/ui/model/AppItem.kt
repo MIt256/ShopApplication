@@ -13,7 +13,6 @@ data class AppItem(
     val currencyId: String,
     val costValue: String,
     val sellingState: String,
-    val subtitle: String,
     val title:String,
     val viewItemURL: String
 ):Parcelable

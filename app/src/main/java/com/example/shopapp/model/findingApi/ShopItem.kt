@@ -12,18 +12,18 @@ data class ShopItem(
     val subtitle: List<String>,
     val title: List<String>,
     val viewItemURL: List<String>
-){
-    fun mapToAppItem() = AppItem(
-        galleryURL[0],
-        globalId[0],
-        itemId[0],
-        location[0],
-        primaryCategory[0].categoryName[0],
-        sellingStatus[0].currentPrice[0].currencyId,
-        sellingStatus[0].currentPrice[0].__value__,
-        sellingStatus[0].sellingState[0],
-        subtitle[0],
-        title[0],
-        viewItemURL[0]
-    )
+) {
+    fun mapToAppItem() =
+        AppItem(
+            galleryURL[0],
+            globalId[0],
+            itemId[0],
+            location[0],
+            primaryCategory[0].categoryName[0],
+            sellingStatus[0].currentPrice[0].currencyId,
+            sellingStatus[0].currentPrice[0].__value__,
+            sellingStatus[0].sellingState[0],
+            title[0],
+            viewItemURL[0]
+        )
 }

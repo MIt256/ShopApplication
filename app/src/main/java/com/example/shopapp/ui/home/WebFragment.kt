@@ -44,7 +44,7 @@ class WebFragment : Fragment() {
           //  args.item
            // val item = requireArguments().getSerializable("item") as Item
             Toast.makeText(binding.root.context,
-                "Success added to cart",
+                "${args.item.title} Success added to cart",
                 Toast.LENGTH_SHORT).show()
         }
 

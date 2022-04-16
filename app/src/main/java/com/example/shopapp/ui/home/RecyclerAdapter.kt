@@ -8,21 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.ListItemBinding
-import com.example.shopapp.model.findingApi.ShopItem
+import com.example.shopapp.ui.model.AppItem
 
 class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) -> Unit):   RecyclerView.Adapter<RecyclerAdapter.ItemHolder>() {
 //TODO GLIDE FIX
-    var recyclerViewItems = ArrayList<ShopItem>()
+    var recyclerViewItems = ArrayList<AppItem>()
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListItemBinding.bind(view)
-        fun bind(shopItem: ShopItem) = with(binding) {
+        fun bind(appItem: AppItem) = with(binding) {
             //TODO reformat
-            glide.load(shopItem.galleryURL[0])
+            itemImage.setImageResource(R.drawable.ic_image_not_supported)
+            glide.load(appItem.galleryURL)
                 .into(binding.itemImage)
-            title.text = shopItem.title[0]
-            category.text = shopItem.primaryCategory[0].categoryName[0]
-            price.text = shopItem.sellingStatus[0].currentPrice[0].__value__
+            title.text = appItem.title
+            category.text = appItem.categoryName
+            price.text = appItem.costValue
         }
     }
 
@@ -33,7 +34,7 @@ class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) 
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            clickListener(position,recyclerViewItems[position].viewItemURL[0])
+            clickListener(position,recyclerViewItems[position].viewItemURL)
         }
         holder.bind(recyclerViewItems[position])
     }
@@ -43,7 +44,7 @@ class RecyclerAdapter(var glide:RequestManager, val clickListener: (Int,String) 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addToList(shopItems: ArrayList<ShopItem>) {
+    fun addToList(shopItems: ArrayList<AppItem>) {
         recyclerViewItems = shopItems
         notifyDataSetChanged()
     }

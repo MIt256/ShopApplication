@@ -9,6 +9,9 @@ data class SearchResult(
     @SerializedName("item")
     val shopItems: ArrayList<ShopItem>
 ) {
-    fun mapToAppItem() =
-        shopItems.map { it.mapToAppItem() }
+    fun mapToAppItem():ArrayList<AppItem>{
+        val items = ArrayList<AppItem>()
+        shopItems.forEach{ items.add(it.mapToAppItem()) }
+        return items
+    }
 }

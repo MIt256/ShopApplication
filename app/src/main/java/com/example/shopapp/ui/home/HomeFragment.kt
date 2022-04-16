@@ -18,6 +18,7 @@ import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.FragmentHomeBinding
 import com.example.shopapp.di.application.appComponent
+import com.example.shopapp.ui.model.AppItem
 import javax.inject.Inject
 
 
@@ -95,12 +96,12 @@ class HomeFragment : Fragment() {
 
         //adapter action on tap
         adapter = RecyclerAdapter(glide) {pos,address ->
-            val shopItem = homeViewModel.getSelectedItems().value!![pos]
+            val item = homeViewModel.getSelectedItems().value!![pos]
 //            val bundle = Bundle()
 //                bundle.putString("address", address)
 //                bundle.putSerializable("item",item as Serializable )
             // todo pos from new list (category) default ALL and pos from it
-            val action = HomeFragmentDirections.actionNavigationHomeToWebFragment3(address, shopItem)
+            val action = HomeFragmentDirections.actionNavigationHomeToWebFragment3(address, item)
 
                 findNavController().navigate(action)
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shopapp.model.findingApi.ShopItem
 import com.example.shopapp.repository.Repository
+import com.example.shopapp.ui.model.AppItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,9 +15,9 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val repo: Repository): ViewModel() {
 
-    private val allItems = MutableLiveData<ArrayList<ShopItem>>()
+    private val allItems = MutableLiveData<ArrayList<AppItem>>()
     private val categories = MutableLiveData<MutableList<String>>()
-    private val selectedItems = MutableLiveData<ArrayList<ShopItem>>()
+    private val selectedItems = MutableLiveData<ArrayList<AppItem>>()
 
     fun getAllItems() = allItems
     fun getCategories() = categories
@@ -27,11 +28,11 @@ class HomeViewModel @Inject constructor(private val repo: Repository): ViewModel
             //todo fix null case
             if (categories.value!![position] != "ALL") {
                 CoroutineScope(Dispatchers.Default).launch {
-                    val categoryItems = ArrayList<ShopItem>()
+                    val categoryItems = ArrayList<AppItem>()
                     val allItems = allItems.value
                     if (allItems != null) {
                         allItems.forEach {
-                            if (it.primaryCategory[0].categoryName[0] == categories.value!![position]) categoryItems.add(
+                            if (it.categoryName == categories.value!![position]) categoryItems.add(
                                 it
                             )
                         }
@@ -60,8 +61,8 @@ class HomeViewModel @Inject constructor(private val repo: Repository): ViewModel
         if (!allItems.value.isNullOrEmpty()){
             var tempCategories = arrayListOf("ALL")
             allItems.value?.forEach {
-                if (!tempCategories.contains( it.primaryCategory[0].categoryName[0]))
-                    tempCategories.add(it.primaryCategory[0].categoryName[0])
+                if (!tempCategories.contains( it.categoryName))
+                    tempCategories.add(it.categoryName)
             }
         categories.value = tempCategories
         } else categories.value = arrayListOf()
