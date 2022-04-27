@@ -5,9 +5,9 @@ import com.example.shopapp.ui.model.AppItem
 
 class Profile {
 
-    companion object{
+    companion object {
 
-        var image: Uri? = null
+        var image: String = ""
 
         var firstName = ""
         var secondName = ""
@@ -19,6 +19,28 @@ class Profile {
         var theme = "light"
 
         var cartList = ArrayList<AppItem>()
+
+        fun getFirebaseProfile() = FirebaseProfile(
+            Profile.image,
+            Profile.firstName,
+            Profile.secondName,
+            Profile.lastName,
+            Profile.email,
+            Profile.currency,
+            Profile.theme,
+            Profile.cartList
+        )
+
+        fun setProfile(fbProfile: FirebaseProfile){
+            Profile.image = fbProfile.profileImage
+            Profile.firstName = fbProfile.profileFirstName
+            Profile.secondName = fbProfile.profileSecondName
+            Profile.lastName = fbProfile.profileLastName
+            Profile.email = fbProfile.profileEmail
+            Profile.currency = fbProfile.profileCurrency
+            Profile.theme = fbProfile.profileTheme
+            Profile.cartList = fbProfile.profileCartList
+        }
 
     }
 

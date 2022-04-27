@@ -1,6 +1,7 @@
 package com.example.shopapp.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.shopapp.R
 import com.example.shopapp.databinding.FragmentAuthBinding
+import com.example.shopapp.ui.static.FirebaseProfile
+import com.example.shopapp.ui.static.Profile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -25,7 +28,7 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAuthBinding.inflate(layoutInflater)
-
+        setListener()
         return binding.root
     }
 
@@ -48,8 +51,9 @@ class AuthFragment : Fragment() {
             if (checkData(login, password)) {
                 auth.createUserWithEmailAndPassword(login, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        reference.child(login.hashCode().toString())
-                            .setValue(User(login, mutableListOf()))
+                        Profile.email = login
+                        reference.child(login.hashCode().toString()).child("profile")
+                            .setValue(Profile.getFirebaseProfile())
                         val bundle = Bundle()
                         bundle.putString("hash", login.hashCode().toString())
                         Navigation
@@ -70,6 +74,13 @@ class AuthFragment : Fragment() {
             if (checkData(login, password)) {
                 auth.signInWithEmailAndPassword(login, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        //get profile
+                        reference.child(login.hashCode().toString()).child("profile").get().addOnSuccessListener {
+                           Profile.setProfile(it.getValue(FirebaseProfile::class.java)!!)
+                        }.addOnFailureListener{
+                            Log.e("firebase", "Error getting data", it)
+                        }
+
                         val bundle = Bundle()
                         bundle.putString("hash", login.hashCode().toString())
                         Navigation

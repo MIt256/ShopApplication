@@ -15,6 +15,7 @@ import com.example.shopapp.databinding.FragmentCartBinding
 import com.example.shopapp.di.application.appComponent
 import com.example.shopapp.ui.home.HomeFragmentDirections
 import com.example.shopapp.ui.home.RecyclerAdapter
+import com.example.shopapp.ui.static.Profile
 import javax.inject.Inject
 
 class CartFragment : Fragment() {
@@ -24,7 +25,7 @@ class CartFragment : Fragment() {
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
-    lateinit var adapter: RecyclerAdapter
+    lateinit var adapter: CartAdapter
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
@@ -46,13 +47,16 @@ class CartFragment : Fragment() {
         binding.itemView.layoutManager = LinearLayoutManager(binding.root.context)
 
         //adapter action on tap
-        adapter = RecyclerAdapter(glide) {pos,address ->
+        adapter = CartAdapter(glide) {pos,address ->
             val item = cartViewModel.getItems().value!![pos]
             val action =CartFragmentDirections.actionNavigationCartToWebFragment(address, item)
             findNavController().navigate(action)
             Toast.makeText(binding.root.context, "Success", Toast.LENGTH_SHORT).show()
         }
         binding.itemView.adapter = adapter
+        //todo kostyl ebany
+        if (Profile.cartList != cartViewModel.getItems().value)
+            cartViewModel.getItems().value = Profile.cartList
 
         cartViewModel.getItems().observe(viewLifecycleOwner) {
             adapter.addToList(it)

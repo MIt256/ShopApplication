@@ -15,8 +15,5 @@ object GlideModule {
     @Provides
     fun provideGlideInstance(
         context: Context
-    ) = Glide.with(context).setDefaultRequestOptions(
-        RequestOptions()
-            .diskCacheStrategy(DiskCacheStrategy.DATA)
-    )
+    ) = Glide.with(context)
 }

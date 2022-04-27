@@ -52,4 +52,10 @@ class MainActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
+    //todo global
+    //todo 1. add dark theme
+    //todo 2. add diff currencies
+    //todo 3. fix info showing
+
 }

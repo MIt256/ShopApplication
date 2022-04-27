@@ -11,19 +11,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.example.shopapp.databinding.FragmentSettingsBinding
+import com.example.shopapp.ui.auth.DB
 import com.example.shopapp.ui.home.HomeFragmentDirections
 import com.example.shopapp.ui.static.Profile
+import javax.inject.Inject
 
 
 class SettingsFragment : Fragment() {
+
+
 
     private var _binding: FragmentSettingsBinding? = null
     var languages = arrayOf("USD", "EUR", "RUB", "BYR", "CNY","UAH")
     val NEW_SPINNER_ID = 1
     private val binding get() = _binding!!
+
+    private val reference by lazy { DB.getReference() }
+
+//    @Inject
+//    lateinit var glide: RequestManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +60,7 @@ class SettingsFragment : Fragment() {
             setSelection(0, false)
             prompt = "Select currency"
         }
-        binding.imageView.setImageURI(Profile.image)
+
 
         binding.saveBtn.setOnClickListener {
             Profile.currency = binding.spinner.selectedItem.toString()
@@ -57,6 +69,9 @@ class SettingsFragment : Fragment() {
             Profile.lastName = binding.editTextLastName.text.toString()
 
             Profile.theme = binding.themeChanger.isChecked.toString()
+            //todo change?
+            reference.child(Profile.email.hashCode().toString()).child("profile")
+                .setValue(Profile.getFirebaseProfile())
 
             Toast.makeText(context,"Success saved",Toast.LENGTH_SHORT).show()
         }
@@ -66,13 +81,17 @@ class SettingsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        if (Profile.image != "")
+           Glide.with(root).load(Profile.image)
+                .into(binding.imageView)
+
         return root
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (data != null) {
             binding.imageView.setImageURI(data.data)
-            Profile.image = data.data
+            Profile.image = data.data.toString()
         }
     }
 
