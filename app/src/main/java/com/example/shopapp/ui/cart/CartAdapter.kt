@@ -9,10 +9,14 @@ import com.bumptech.glide.RequestManager
 import com.example.shopapp.R
 import com.example.shopapp.databinding.ListItemBinding
 import com.example.shopapp.ui.model.AppItem
+import com.example.shopapp.ui.static.CurrencyInfo
+import com.example.shopapp.ui.static.Profile
 
 class CartAdapter(var glide:RequestManager, val clickListener: (Int,String) -> Unit):   RecyclerView.Adapter<CartAdapter.ItemHolder>() {
     //TODO GLIDE FIX
     var recyclerViewItems = ArrayList<AppItem>()
+    var num =1.0
+    var dollarcost = 2.6534
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListItemBinding.bind(view)
@@ -23,7 +27,11 @@ class CartAdapter(var glide:RequestManager, val clickListener: (Int,String) -> U
                 .into(binding.itemImage)
             title.text = appItem.title
             category.text = appItem.categoryName
-            price.text = appItem.costValue
+            var priceval = appItem.costValue.toDouble()
+            priceval *= dollarcost
+            priceval /= num
+            price.text = String.format("%.2f", priceval)
+            currency.text = Profile.currency
         }
     }
 
@@ -46,6 +54,8 @@ class CartAdapter(var glide:RequestManager, val clickListener: (Int,String) -> U
     @SuppressLint("NotifyDataSetChanged")
     fun addToList(shopItems: ArrayList<AppItem>) {
         recyclerViewItems = shopItems
+        CurrencyInfo.currency.forEach{ if (it.Cur_Abbreviation == "USD") dollarcost = it.Cur_OfficialRate }
+        CurrencyInfo.currency.forEach{ if (it.Cur_Abbreviation == Profile.currency) num = it.Cur_OfficialRate }
         notifyDataSetChanged()
     }
 }

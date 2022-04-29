@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.bumptech.glide.RequestManager
 import com.example.shopapp.databinding.FragmentSettingsBinding
 import com.example.shopapp.ui.auth.DB
 import com.example.shopapp.ui.home.HomeFragmentDirections
+import com.example.shopapp.ui.static.CurrencyTypes
 import com.example.shopapp.ui.static.Profile
 import javax.inject.Inject
 
@@ -28,7 +30,7 @@ class SettingsFragment : Fragment() {
 
 
     private var _binding: FragmentSettingsBinding? = null
-    var languages = arrayOf("USD", "EUR", "RUB", "BYR", "CNY","UAH")
+
     val NEW_SPINNER_ID = 1
     private val binding get() = _binding!!
 
@@ -51,7 +53,7 @@ class SettingsFragment : Fragment() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1) }
         //spinner
-        var aa = ArrayAdapter(binding.root.context, R.layout.simple_spinner_item, languages)
+        var aa = ArrayAdapter(binding.root.context, R.layout.simple_spinner_item, CurrencyTypes.values())
         aa.setDropDownViewResource(R.layout.simple_spinner_item)
 
         with(binding.spinner)
@@ -74,6 +76,16 @@ class SettingsFragment : Fragment() {
                 .setValue(Profile.getFirebaseProfile())
 
             Toast.makeText(context,"Success saved",Toast.LENGTH_SHORT).show()
+
+
+        }
+
+        binding.themeChanger.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+            }else{
+                setTheme(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
 
         binding.accountChange.setOnClickListener {
@@ -86,6 +98,10 @@ class SettingsFragment : Fragment() {
                 .into(binding.imageView)
 
         return root
+    }
+    private fun setTheme(themeMode: Int) {
+        AppCompatDelegate.setDefaultNightMode(themeMode)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
